@@ -6,7 +6,7 @@ erDiagram
         string id PK "required"
         string user FK "required"
         string title "required"
-        string description "optional"
+        string description "required"
         timestamp created_at "required"
     }
     USERS ||--o{ ENTITIES : owns

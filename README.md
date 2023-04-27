@@ -10,5 +10,7 @@ in the real world... I hope that at some point I can make something useful out
 of them. By now, I will keep them very minimal.
 
 I am following this tutorial in order to carry out the project:
+
 https://www.youtube.com/watch?v=0sOvCWFmrtA&list=WL&index=2&t=41782s
+
 https://github.com/Sanjeev-Thiyagarajan/fastapi-course
