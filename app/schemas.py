@@ -7,8 +7,8 @@ class EntityBase(BaseModel):
     description: str
 
 
-# class EntityCreate(EntityBase):
-#     pass
+class EntityCreate(EntityBase):
+    pass
 
 class Entity(EntityBase):
     id: int
