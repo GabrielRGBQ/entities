@@ -17,9 +17,5 @@ class Entity(EntityBase):
     class Config:
         orm_mode = True
 
-# class EntityOut(BaseModel):
-#     Post: Entity
-#     votes: int
-
-#     class Config:
-#         orm_mode = True
+class EntityOut(Entity):
+    pass
