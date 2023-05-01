@@ -29,7 +29,7 @@ def get_entity(id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Entity)
-def create_entities(entity: schemas.EntityCreate, db: Session = Depends(get_db)):
+def create_entity(entity: schemas.EntityCreate, db: Session = Depends(get_db)):
     new_entity = models.Entity(**entity.dict())
     db.add(new_entity)
     db.commit()
