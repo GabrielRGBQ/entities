@@ -10,13 +10,13 @@ router = APIRouter(prefix="/entities", tags=["Entities"])
 
 
 @router.get("/", response_model=List[schemas.EntityOut])
-def get_entities(db: Session = Depends(get_db)):
+def get_entities(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     entities = db.query(models.Entity).all()
     return entities
 
 
 @router.get("/{id}", response_model=schemas.EntityOut)
-def get_entity(id: int, db: Session = Depends(get_db)):
+def get_entity(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     entity = db.query(models.Entity).filter(models.Entity.id == id).first()
 
     if not entity:
@@ -31,7 +31,6 @@ def get_entity(id: int, db: Session = Depends(get_db)):
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Entity)
 def create_entity(entity: schemas.EntityCreate, db: Session = Depends(get_db),
                   current_user: int = Depends(oauth2.get_current_user)):
-    print(current_user)
     new_entity = models.Entity(**entity.dict())
     db.add(new_entity)
     db.commit()
@@ -40,9 +39,8 @@ def create_entity(entity: schemas.EntityCreate, db: Session = Depends(get_db),
 
 
 @router.put("/{id}", response_model=schemas.Entity)
-def update_entity(
-    id: int, updated_entity: schemas.EntityCreate, db: Session = Depends(get_db)
-):
+def update_entity(id: int, updated_entity: schemas.EntityCreate, db: Session = Depends(get_db),
+                  current_user: int = Depends(oauth2.get_current_user)):
     entity_query = db.query(models.Entity).filter(models.Entity.id == id)
     entity = entity_query.first()
 
@@ -58,7 +56,7 @@ def update_entity(
 
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_entity(id: int, db: Session = Depends(get_db)):
+def delete_entity(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
     entity_query = db.query(models.Entity).filter(models.Entity.id == id)
     entity = entity_query.first()
 
