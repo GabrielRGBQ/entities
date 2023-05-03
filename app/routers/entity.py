@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
-from .. import models, schemas
+from .. import models, schemas, oauth2
 from ..database import get_db
 
 router = APIRouter(prefix="/entities", tags=["Entities"])
@@ -29,7 +29,9 @@ def get_entity(id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Entity)
-def create_entity(entity: schemas.EntityCreate, db: Session = Depends(get_db)):
+def create_entity(entity: schemas.EntityCreate, db: Session = Depends(get_db),
+                  current_user: int = Depends(oauth2.get_current_user)):
+    print(current_user)
     new_entity = models.Entity(**entity.dict())
     db.add(new_entity)
     db.commit()
