@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from . import models
 from .database import engine
 from .routers import entity, user, authentication
+from .config import settings
 
 # Create the tables in the database if they don't already exist
 models.Base.metadata.create_all(bind=engine)
