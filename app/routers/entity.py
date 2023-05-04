@@ -31,7 +31,7 @@ def get_entity(id: int, db: Session = Depends(get_db), current_user: int = Depen
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Entity)
 def create_entity(entity: schemas.EntityCreate, db: Session = Depends(get_db),
                   current_user: int = Depends(oauth2.get_current_user)):
-    new_entity = models.Entity(**entity.dict())
+    new_entity = models.Entity(owner_id=current_user.id, **entity.dict())
     db.add(new_entity)
     db.commit()
     db.refresh(new_entity)
@@ -49,6 +49,10 @@ def update_entity(id: int, updated_entity: schemas.EntityCreate, db: Session = D
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Entity with id: {id} was not found",
         )
+    
+    if entity.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Not authorized to perform requested action")
 
     entity_query.update(updated_entity.dict(), synchronize_session=False)
     db.commit()
@@ -65,6 +69,10 @@ def delete_entity(id: int, db: Session = Depends(get_db), current_user: int = De
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Entity with id: {id} does not exist",
         )
+    
+    if entity.owner_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Not authorized to perform requested action")
 
     entity_query.delete(synchronize_session=False)
     db.commit()
