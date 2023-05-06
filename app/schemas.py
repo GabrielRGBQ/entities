@@ -54,3 +54,8 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id: Optional[str] = None
+
+
+class Like(BaseModel):
+    entity_id: int
+    dir: conint(le=1)

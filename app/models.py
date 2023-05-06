@@ -13,9 +13,10 @@ class Entity(Base):
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
     )
-    owner_id = Column(Integer, ForeignKey(
-        "users.id", ondelete="CASCADE"), nullable=False)
-    
+    owner_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+
     owner = relationship("User")
 
 
@@ -27,4 +28,15 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )
+
+
+class Like(Base):
+    __tablename__ = "likes"
+
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    entity_id = Column(
+        Integer, ForeignKey("entities.id", ondelete="CASCADE"), primary_key=True
     )
