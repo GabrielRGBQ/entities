@@ -33,8 +33,12 @@ class Entity(EntityBase):
         orm_mode = True
 
 
-class EntityOut(Entity):
-    pass
+class EntityOut(BaseModel):
+    Entity: Entity
+    likes: int
+    
+    class Config:
+        orm_mode = True
 
 
 class UserCreate(BaseModel):

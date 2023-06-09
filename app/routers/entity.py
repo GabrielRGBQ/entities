@@ -1,7 +1,8 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from .. import models, schemas, oauth2
 from ..database import get_db
@@ -10,8 +11,11 @@ router = APIRouter(prefix="/entities", tags=["Entities"])
 
 
 @router.get("/", response_model=List[schemas.EntityOut])
-def get_entities(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    entities = db.query(models.Entity).all()
+def get_entities(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user),
+                 limit: int = 10, skip: int = 0, search: Optional[str] = ""):
+    
+    entities = db.query(models.Entity, func.count(models.Like.entity_id).label("likes")).join(
+         models.Like, models.Like.entity_id == models.Entity.id, isouter=True).group_by(models.Entity.id).filter(models.Entity.title.contains(search)).limit(limit).offset(skip).all()
     return entities
 
 
