@@ -21,7 +21,8 @@ def get_entities(db: Session = Depends(get_db), current_user: int = Depends(oaut
 
 @router.get("/{id}", response_model=schemas.EntityOut)
 def get_entity(id: int, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    entity = db.query(models.Entity).filter(models.Entity.id == id).first()
+    entity = db.query(models.Entity, func.count(models.Like.entity_id).label("likes")).join(
+         models.Like, models.Like.entity_id == models.Entity.id, isouter=True).group_by(models.Entity.id).filter(models.Entity.id == id).first()
 
     if not entity:
         raise HTTPException(
