@@ -6,7 +6,9 @@ from .routers import entity, user, authentication, like
 from .config import settings
 
 # Create the tables in the database if they don't already exist
-models.Base.metadata.create_all(bind=engine)
+# It is no longer needed since we incorporated Alembic... we can create the
+# database by using Alembic comands
+# models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
