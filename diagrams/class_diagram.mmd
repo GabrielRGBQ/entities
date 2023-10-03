@@ -1,0 +1,18 @@
+---
+title: Class diagram
+---
+classDiagram
+    User "1"--"0..n"TODO : owns
+    class User{
+        -str id
+        -str password
+        -str email
+        -timestamp created_at
+    }
+    class TODO{
+        -str id
+        -str user
+        -str title
+        -str description
+        -timestamp created_at
+    }

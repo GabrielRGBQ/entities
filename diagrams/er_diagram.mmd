@@ -1,0 +1,19 @@
+---
+title: ER diagram
+---
+erDiagram
+    ENTITIES {
+        string id PK "required"
+        string user FK "required"
+        string title "required"
+        string description "required"
+        timestamp created_at "required"
+    }
+    USERS ||--o{ ENTITIES : owns
+    USERS {
+        string id PK "required"
+        string password "required"
+        string email "required"
+        timestamp created_at "required"
+    }
+    
