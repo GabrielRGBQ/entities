@@ -2,17 +2,23 @@
 title: Class diagram
 ---
 classDiagram
-    User "1"--"0..n"TODO : owns
+    User "1"--"0..n"Entity : owns
+    Like "0..n"--"1"User 
+    Like "0..n"--"1"Entity 
     class User{
         -str id
         -str password
         -str email
         -timestamp created_at
     }
-    class TODO{
+    class Entity{
         -str id
         -str user
         -str title
         -str description
         -timestamp created_at
+    }
+    class Like{
+        -str user
+        -str entity
     }

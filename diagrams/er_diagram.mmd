@@ -16,4 +16,10 @@ erDiagram
         string email "required"
         timestamp created_at "required"
     }
+    LIKES o{--|| ENTITIES : points 
+    LIKES o{--|| USERS : points
+    LIKES {
+        string user_id FK "required"
+        string entity_id FK "required"
+    }
     
