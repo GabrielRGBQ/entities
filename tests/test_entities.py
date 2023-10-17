@@ -1,4 +1,5 @@
 import pytest
+
 from app import schemas
 
 
@@ -76,8 +77,7 @@ def test_delete_entity_non_exist(authorized_client):
 
 
 def test_delete_other_user_entity(authorized_client, test_entities):
-    res = authorized_client.delete(
-        f"/entities/{test_entities[3].id}")
+    res = authorized_client.delete(f"/entities/{test_entities[3].id}")
     assert res.status_code == 403
 
 
@@ -94,12 +94,13 @@ def test_update_entity(authorized_client, test_entities):
     assert updated_entity.description == data["description"]
 
 
-def test_update_other_user_entity(authorized_client, test_user, test_user2, test_entities):
+def test_update_other_user_entity(
+    authorized_client, test_user, test_user2, test_entities
+):
     data = {
         "title": "updated title",
         "description": "updatd content",
-        "id": test_entities[3].id
-
+        "id": test_entities[3].id,
     }
     res = authorized_client.put(f"/entities/{test_entities[3].id}", json=data)
     assert res.status_code == 403
@@ -114,8 +115,7 @@ def test_update_entity_non_exist(authorized_client, test_user, test_entities):
     data = {
         "title": "updated title",
         "description": "updatd content",
-        "id": test_entities[2].id
-
+        "id": test_entities[2].id,
     }
     res = authorized_client.put("/entities/8000000", json=data)
 
